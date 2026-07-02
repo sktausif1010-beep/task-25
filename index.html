@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FlowApp</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+theme:{
+extend:{
+
+fontFamily:{
+sans:["Inter","sans-serif"]
+},
+
+colors:{
+primary:"#6366f1"
+},
+
+animation:{
+float:"float 6s ease-in-out infinite",
+blob:"blob 12s infinite",
+spinSlow:"spin 20s linear infinite",
+pulseSlow:"pulse 5s infinite",
+slideUp:"slideUp 1s ease forwards",
+slideLeft:"slideLeft 1s ease forwards",
+slideRight:"slideRight 1s ease forwards",
+glow:"glow 2s ease-in-out infinite alternate"
+},
+
+keyframes:{
+
+slideUp:{
+'0%':{
+opacity:'0',
+transform:'translateY(60px)'
+},
+'100%':{
+opacity:'1',
+transform:'translateY(0)'
+}
+},
+
+slideLeft:{
+'0%':{
+opacity:'0',
+transform:'translateX(-60px)'
+},
+'100%':{
+opacity:'1',
+transform:'translateX(0)'
+}
+},
+
+slideRight:{
+'0%':{
+opacity:'0',
+transform:'translateX(60px)'
+},
+'100%':{
+opacity:'1',
+transform:'translateX(0)'
+}
+},
+
+float:{
+'0%,100%':{
+transform:'translateY(0px)'
+},
+'50%':{
+transform:'translateY(-20px)'
+}
+},
+
+blob:{
+'0%':{
+transform:'translate(0px,0px) scale(1)'
+},
+'33%':{
+transform:'translate(30px,-50px) scale(1.2)'
+},
+'66%':{
+transform:'translate(-20px,20px) scale(.9)'
+},
+'100%':{
+transform:'translate(0px,0px) scale(1)'
+}
+},
+
+glow:{
+'0%':{
+boxShadow:'0 0 15px #6366f1'
+},
+'100%':{
+boxShadow:'0 0 45px #8b5cf6'
+}
+}
+
+}
+
+}
+}
+}
+</script>
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:Inter,sans-serif;
+background:#020617;
+overflow-x:hidden;
+}
+
+.grid-bg{
+background-image:
+linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+
+background-size:50px 50px;
+}
+
+.glass{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(25px);
+border:1px solid rgba(255,255,255,.15);
+}
+
+.gradient-text{
+background:linear-gradient(90deg,#38bdf8,#818cf8,#ec4899);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.hero-img{
+transition:.6s;
+transform-style:preserve-3d;
+}
+
+.hero-img:hover{
+transform:
+perspective(1200px)
+rotateY(-10deg)
+rotateX(6deg)
+scale(1.05);
+}
+
+.min-h-screen{
+    margin-top: 80px;
+}
+
+</style>
+
+</head>
+
+<body class="text-white">
+
+<div class="fixed inset-0 grid-bg -z-20"></div>
+
+<div class="absolute top-20 left-20 w-72 h-72 rounded-full bg-cyan-500/30 blur-[120px] animate-blob -z-10"></div>
+
+<div class="absolute right-10 top-80 w-80 h-80 rounded-full bg-purple-600/30 blur-[120px] animate-blob -z-10"></div>
+
+<div class="absolute bottom-20 left-1/2 w-72 h-72 rounded-full bg-pink-500/20 blur-[120px] animate-blob -z-10"></div>
+
+<!-- NAVBAR -->
+
+<nav class="fixed top-0 w-full z-50 glass">
+
+<div class="max-w-7xl mx-auto px-8">
+
+<div class="h-20 flex items-center justify-between">
+
+<div class="flex items-center gap-3">
+
+<div class="w-12 h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center shadow-xl">
+
+⚡
+
+</div>
+
+<h1 class="font-black text-2xl gradient-text">
+
+FlowApp
+
+</h1>
+
+</div>
+
+<div class="hidden md:flex gap-10">
+
+<a href="#features" class="hover:text-cyan-400 transition">
+
+Features
+
+</a>
+
+<a href="#pricing" class="hover:text-cyan-400 transition">
+
+Pricing
+
+</a>
+
+<a href="#reviews" class="hover:text-cyan-400 transition">
+
+Reviews
+
+</a>
+
+</div>
+
+<div class="hidden md:block">
+
+<button class="px-7 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-110 transition shadow-2xl animate-glow">
+
+Get Started
+
+</button>
+
+</div>
+
+<button id="menuBtn" class="md:hidden text-3xl">
+☰
+</button>
+
+</div>
+
+</div>
+
+</nav>
+
+<div id="mobileMenu"
+class="fixed top-20 left-0 w-full bg-slate-900/95 backdrop-blur-xl hidden z-40">
+
+<div class="flex flex-col p-8 gap-6">
+
+<a href="#features" class="text-lg hover:text-cyan-400">
+Features
+</a>
+
+<a href="#pricing" class="text-lg hover:text-cyan-400">
+Pricing
+</a>
+
+<a href="#reviews" class="text-lg hover:text-cyan-400">
+Reviews
+</a>
+
+<button
+class="mt-4 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600">
+
+Get Started
+
+</button>
+
+</div>
+
+</div>
+
+<!-- HERO -->
+
+<section class="min-h-screen flex items-center relative overflow-hidden">
+
+<div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
+
+<div class="animate-slideLeft">
+
+<h1 class="text-6xl lg:text-7xl font-black leading-tight">
+
+Build Better Products
+
+<span class="gradient-text">
+
+Faster
+
+</span>
+
+with AI
+
+</h1>
+
+<p class="mt-8 text-lg text-gray-300 leading-8 max-w-xl">
+
+FlowApp helps modern teams automate repetitive work, collaborate in real time, analyze everything with AI and deliver products faster than ever before.
+
+</p>
+
+<div class="mt-10 flex gap-6 flex-wrap">
+
+<button class="px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-110 transition shadow-2xl animate-glow">
+
+Start Free Trial
+
+</button>
+
+<button class="px-8 py-4 rounded-full glass hover:bg-white/10 transition">
+
+Watch Demo
+
+</button>
+
+</div>
+
+<div class="mt-12 flex gap-10">
+
+<div>
+
+<h2 class="text-4xl font-bold text-cyan-400">
+
+50K+
+
+</h2>
+
+<p class="text-gray-400">
+
+Active Users
+
+</p>
+
+</div>
+
+<div>
+
+<h2 class="text-4xl font-bold text-purple-400">
+
+99.9%
+
+</h2>
+
+<p class="text-gray-400">
+
+Uptime
+
+</p>
+
+</div>
+
+<div>
+
+<h2 class="text-4xl font-bold text-pink-400">
+
+4.9★
+
+</h2>
+
+<p class="text-gray-400">
+
+Customer Rating
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="relative animate-slideRight">
+
+<img
+src="assets/dashboard.jpg"
+class="hero-img rounded-3xl shadow-[0_40px_120px_rgba(0,0,0,.5)]"
+>
+
+<div class="absolute -top-10 -left-10 glass rounded-2xl p-5 animate-float">
+
+<h3 class="font-bold">
+
+Revenue
+
+</h3>
+
+<p class="text-cyan-400 text-2xl">
+
++$48,540
+
+</p>
+
+</div>
+
+<div class="absolute -bottom-8 right-0 glass rounded-2xl p-5 animate-float">
+
+<h3 class="font-bold">
+
+Growth
+
+</h3>
+
+<p class="text-green-400 text-2xl">
+
++128%
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+
+↓
+
+</div>
+
+</section>
+
+<!-- ================= FEATURES ================= -->
+
+<section id="features" class="py-32 relative overflow-hidden">
+
+<div class="absolute left-0 top-20 w-72 h-72 bg-cyan-500/20 blur-[120px] rounded-full"></div>
+<div class="absolute right-0 bottom-20 w-80 h-80 bg-purple-500/20 blur-[120px] rounded-full"></div>
+
+<div class="max-w-7xl mx-auto px-8">
+
+<div class="text-center mb-20">
+
+<span class="text-cyan-400 font-semibold tracking-widest uppercase">
+Features
+</span>
+
+<h2 class="text-5xl font-black mt-5">
+Everything your team needs
+</h2>
+
+<p class="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+Powerful AI tools, beautiful collaboration and enterprise-grade security —
+all packed into one modern platform.
+</p>
+
+</div>
+
+<div class="grid lg:grid-cols-4 gap-8 auto-rows-[250px]">
+
+<!-- BIG CARD -->
+
+<div
+class="group lg:col-span-2 lg:row-span-2 rounded-3xl glass p-10 relative overflow-hidden border border-white/10 hover:border-cyan-400 transition duration-500 hover:scale-[1.03]">
+
+<div class="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-cyan-500/20 blur-3xl group-hover:scale-125 transition duration-700"></div>
+
+<div class="text-6xl mb-6 animate-float">
+🤖
+</div>
+
+<h3 class="text-4xl font-bold mb-6">
+AI Powered Automation
+</h3>
+
+<p class="text-gray-300 leading-8 text-lg">
+Automate repetitive workflows, generate intelligent reports, summarize meetings,
+predict trends and let AI do the heavy lifting while your team focuses on innovation.
+</p>
+
+<div class="mt-10 grid grid-cols-2 gap-6">
+
+<div class="glass rounded-2xl p-5">
+
+<p class="text-gray-400 text-sm">
+Tasks Automated
+</p>
+
+<h4 class="text-3xl font-bold text-cyan-400">
+92%
+</h4>
+
+</div>
+
+<div class="glass rounded-2xl p-5">
+
+<p class="text-gray-400 text-sm">
+Time Saved
+</p>
+
+<h4 class="text-3xl font-bold text-green-400">
+320 hrs
+</h4>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CARD -->
+
+<div class="group rounded-3xl glass p-8 hover:scale-105 hover:-rotate-2 transition duration-500 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+<div class="text-5xl mb-6 animate-float">
+⚡
+</div>
+
+<h3 class="text-2xl font-bold mb-4">
+Lightning Fast
+</h3>
+
+<p class="text-gray-400">
+Optimized cloud infrastructure for instant performance.
+</p>
+
+</div>
+
+<!-- CARD -->
+
+<div class="group rounded-3xl glass p-8 hover:scale-105 hover:rotate-2 transition duration-500 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+<div class="text-5xl mb-6 animate-float">
+🔒
+</div>
+
+<h3 class="text-2xl font-bold mb-4">
+Bank-Level Security
+</h3>
+
+<p class="text-gray-400">
+End-to-end encryption with enterprise protection.
+</p>
+
+</div>
+
+<!-- CARD -->
+
+<div class="group rounded-3xl glass p-8 hover:scale-105 transition duration-500 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-br from-pink-500/0 to-pink-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+<div class="text-5xl mb-6 animate-float">
+📊
+</div>
+
+<h3 class="text-2xl font-bold mb-4">
+Advanced Analytics
+</h3>
+
+<p class="text-gray-400">
+Beautiful dashboards with live insights powered by AI.
+</p>
+
+</div>
+
+<!-- CARD -->
+
+<div class="group rounded-3xl glass p-8 hover:scale-105 transition duration-500 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-br from-green-500/0 to-green-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+<div class="text-5xl mb-6 animate-float">
+🔄
+</div>
+
+<h3 class="text-2xl font-bold mb-4">
+Real-time Sync
+</h3>
+
+<p class="text-gray-400">
+Collaborate instantly across every device and location.
+</p>
+
+</div>
+
+<!-- CARD -->
+
+<div class="group rounded-3xl glass p-8 hover:scale-105 transition duration-500 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-yellow-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+<div class="text-5xl mb-6 animate-float">
+👥
+</div>
+
+<h3 class="text-2xl font-bold mb-4">
+Team Collaboration
+</h3>
+
+<p class="text-gray-400">
+Chat, share files and manage projects together in one place.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= LOGO STRIP ================= -->
+
+<section class="py-16 border-y border-white/10">
+
+<div class="max-w-7xl mx-auto px-8">
+
+<p class="text-center uppercase tracking-[8px] text-gray-500 text-sm mb-10">
+
+Trusted by Innovative Teams
+
+</p>
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+
+<div class="glass rounded-2xl py-6 hover:scale-105 transition">
+<span class="text-2xl font-bold text-white/80">Google</span>
+</div>
+
+<div class="glass rounded-2xl py-6 hover:scale-105 transition">
+<span class="text-2xl font-bold text-white/80">Microsoft</span>
+</div>
+
+<div class="glass rounded-2xl py-6 hover:scale-105 transition">
+<span class="text-2xl font-bold text-white/80">Amazon</span>
+</div>
+
+<div class="glass rounded-2xl py-6 hover:scale-105 transition">
+<span class="text-2xl font-bold text-white/80">Netflix</span>
+</div>
+
+<div class="glass rounded-2xl py-6 hover:scale-105 transition">
+<span class="text-2xl font-bold text-white/80">Adobe</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+
+<section id="reviews" class="py-32 relative overflow-hidden">
+
+<div class="absolute left-20 top-10 w-80 h-80 bg-cyan-500/20 rounded-full blur-[140px]"></div>
+<div class="absolute right-20 bottom-10 w-80 h-80 bg-purple-500/20 rounded-full blur-[140px]"></div>
+
+<div class="max-w-7xl mx-auto px-8">
+
+<div class="text-center mb-20">
+
+<span class="uppercase tracking-[6px] text-cyan-400 font-semibold">
+Testimonials
+</span>
+
+<h2 class="text-5xl font-black mt-6">
+Loved by Thousands
+</h2>
+
+<p class="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+See why startups and enterprise teams choose FlowApp to build faster with AI.
+</p>
+
+</div>
+
+<div class="grid lg:grid-cols-3 gap-8">
+
+<!-- Card -->
+
+<div class="glass rounded-3xl p-8 hover:scale-105 transition duration-500">
+
+<div class="text-yellow-400 text-xl mb-6">
+★★★★★
+</div>
+
+<p class="text-gray-300 leading-8 mb-8">
+"FlowApp completely transformed our workflow. We ship features almost twice as fast and our meetings are now automated with AI summaries."
+</p>
+
+<div class="flex items-center gap-4">
+
+<img src="assets/user1.jpg"
+class="w-14 h-14 rounded-full object-cover border-2 border-cyan-400">
+
+<div>
+
+<h4 class="font-bold">
+Sarah Johnson
+</h4>
+
+<p class="text-gray-400 text-sm">
+Product Manager
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Card -->
+
+<div class="glass rounded-3xl p-8 hover:scale-105 transition duration-500 lg:-translate-y-10">
+
+<div class="text-yellow-400 text-xl mb-6">
+★★★★★
+</div>
+
+<p class="text-gray-300 leading-8 mb-8">
+"Real-time collaboration and AI automation reduced repetitive work by over 60%. The analytics dashboard is simply incredible."
+</p>
+
+<div class="flex items-center gap-4">
+
+<img src="assets/user2.jpg"
+class="w-14 h-14 rounded-full object-cover border-2 border-purple-400">
+
+<div>
+
+<h4 class="font-bold">
+Michael Chen
+</h4>
+
+<p class="text-gray-400 text-sm">
+Software Engineer
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Card -->
+
+<div class="glass rounded-3xl p-8 hover:scale-105 transition duration-500">
+
+<div class="text-yellow-400 text-xl mb-6">
+★★★★★
+</div>
+
+<p class="text-gray-300 leading-8 mb-8">
+"Beautiful interface, powerful AI and outstanding support. It's now our team's favorite productivity platform."
+</p>
+
+<div class="flex items-center gap-4">
+
+<img src="assets/user3.jpg"
+class="w-14 h-14 rounded-full object-cover border-2 border-pink-400">
+
+<div>
+
+<h4 class="font-bold">
+Emily Davis
+</h4>
+
+<p class="text-gray-400 text-sm">
+UX Designer
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= CTA ================= -->
+
+<section class="py-32 relative overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-700 opacity-20"></div>
+
+<div class="absolute left-10 top-10 w-72 h-72 rounded-full bg-cyan-400/20 blur-[120px] animate-float"></div>
+
+<div class="absolute right-10 bottom-10 w-72 h-72 rounded-full bg-pink-500/20 blur-[120px] animate-float"></div>
+
+<div class="max-w-5xl mx-auto px-8">
+
+<div class="glass rounded-[40px] p-16 text-center relative overflow-hidden">
+
+<div class="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+
+<h2 class="text-5xl font-black leading-tight">
+
+Ready to transform your workflow?
+
+</h2>
+
+<p class="text-gray-300 text-lg mt-8 max-w-2xl mx-auto leading-8">
+
+Join thousands of teams already building smarter with AI-powered automation,
+advanced analytics and real-time collaboration.
+
+</p>
+
+<div class="flex flex-wrap justify-center gap-6 mt-12">
+
+<button
+class="px-10 py-5 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-110 transition shadow-2xl animate-glow">
+
+Start Free Trial
+
+</button>
+
+<button
+class="px-10 py-5 rounded-full glass hover:bg-white/10 transition">
+
+Schedule Demo
+
+</button>
+
+</div>
+
+<p class="text-gray-400 mt-8">
+
+No credit card required • Free for 14 days • Cancel anytime
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="relative border-t border-white/10 bg-slate-950 overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+
+<div class="max-w-7xl mx-auto px-8 py-20 relative">
+
+<div class="grid lg:grid-cols-5 gap-12">
+
+<!-- Logo -->
+
+<div class="lg:col-span-2">
+
+<div class="flex items-center gap-3">
+
+<div
+class="w-12 h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 flex items-center justify-center shadow-xl">
+
+⚡
+
+</div>
+
+<h2 class="text-3xl font-black gradient-text">
+
+FlowApp
+
+</h2>
+
+</div>
+
+<p class="mt-6 text-gray-400 leading-8 max-w-md">
+
+FlowApp helps modern teams automate workflows, collaborate in real-time,
+analyze data with AI and build products faster than ever.
+
+</p>
+
+<div class="flex gap-4 mt-8">
+
+<a href="#"
+class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-cyan-500 transition text-xl">
+🌐
+</a>
+
+<a href="#"
+class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-blue-500 transition text-xl">
+𝕏
+</a>
+
+<a href="#"
+class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-pink-500 transition text-xl">
+📸
+</a>
+
+<a href="#"
+class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-indigo-500 transition text-xl">
+💼
+</a>
+
+</div>
+
+</div>
+
+<!-- Product -->
+
+<div>
+
+<h3 class="font-bold text-xl mb-6">
+
+Product
+
+</h3>
+
+<ul class="space-y-4 text-gray-400">
+
+<li><a href="#" class="hover:text-cyan-400">Features</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Pricing</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Integrations</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">API</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Updates</a></li>
+
+</ul>
+
+</div>
+
+<!-- Company -->
+
+<div>
+
+<h3 class="font-bold text-xl mb-6">
+
+Company
+
+</h3>
+
+<ul class="space-y-4 text-gray-400">
+
+<li><a href="#" class="hover:text-cyan-400">About</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Careers</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Blog</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Press</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Contact</a></li>
+
+</ul>
+
+</div>
+
+<!-- Legal -->
+
+<div>
+
+<h3 class="font-bold text-xl mb-6">
+
+Legal
+
+</h3>
+
+<ul class="space-y-4 text-gray-400">
+
+<li><a href="#" class="hover:text-cyan-400">Privacy</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Terms</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Cookies</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Licenses</a></li>
+
+<li><a href="#" class="hover:text-cyan-400">Security</a></li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="border-t border-white/10 mt-16 pt-8">
+
+<div
+class="flex flex-col md:flex-row justify-between items-center gap-6">
+
+<p class="text-gray-500">
+
+© 2026 FlowApp. All rights reserved.
+
+</p>
+
+<p class="text-gray-500">
+
+Designed with Love using Tailwind CSS
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</footer>
+
+<script>
+
+const btn=document.getElementById("menuBtn");
+const menu=document.getElementById("mobileMenu");
+
+btn.onclick=()=>{
+
+menu.classList.toggle("hidden");
+
+}
+
+</script>
+</body>
+
+</html>
